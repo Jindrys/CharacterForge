@@ -33,6 +33,7 @@ export type CharacterFormData = {
     currentHp: number;
     armorClass: number;
     speed: number;
+    initiative: number;
   };
   equipment: {
     name: string;

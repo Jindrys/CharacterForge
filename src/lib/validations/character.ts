@@ -6,7 +6,7 @@ export const characterSchema = z.object({
   class: z.string().min(1, "Třída je povinná"),
   level: z.number().int().min(1).max(20),
   backstory: z.string().max(5000).optional(),
-  avatarUrl: z.string().url().optional().or(z.literal("")),
+  avatarUrl: z.string().optional().or(z.literal("")),
   isPublic: z.boolean().default(false),
   stats: z.object({
     strength: z.number().int().min(1).max(30),
