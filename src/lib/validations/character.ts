@@ -39,7 +39,13 @@ export const registerSchema = z.object({
     .min(3, "Username musí mít alespoň 3 znaky")
     .max(30)
     .regex(/^[a-zA-Z0-9_]+$/, "Pouze písmena, čísla a podtržítko"),
-  password: z.string().min(8, "Heslo musí mít alespoň 8 znaků"),
+  password: z
+    .string()
+    .min(8, "Heslo musí mít alespoň 8 znaků")
+    .regex(/[A-Z]/, "Heslo musí obsahovat alespoň jedno velké písmeno")
+    .regex(/[a-z]/, "Heslo musí obsahovat alespoň jedno malé písmeno")
+    .regex(/[0-9]/, "Heslo musí obsahovat alespoň jednu číslici")
+    .regex(/[^A-Za-z0-9]/, "Heslo musí obsahovat alespoň jeden speciální znak"),
 });
 
 export const loginSchema = z.object({
