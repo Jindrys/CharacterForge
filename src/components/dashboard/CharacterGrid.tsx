@@ -114,7 +114,7 @@ export function CharacterGrid({ characters }: Props) {
                     Upravit
                   </Link>
                   <Link
-                    href={`/characters/${character.slug}`}
+                    href={`/hero/${character.slug}`}
                     className="flex-1 flex items-center justify-center gap-1.5 text-xs bg-gray-700 hover:bg-gray-600 text-gray-300 hover:text-white py-2 rounded-lg transition-colors"
                   >
                     <Eye className="w-3 h-3" />

@@ -8,15 +8,15 @@ import type { CharacterFormData } from "@/types";
 export default async function EditCharacterPage({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: Promise<{ characterId: string }>;
 }) {
   const session = await getServerSession(authOptions);
   if (!session) redirect("/login");
 
-  const { id } = await params;
+  const { characterId } = await params;
 
   const character = await prisma.character.findFirst({
-    where: { id, ownerId: session.user.id },
+    where: { id: characterId, ownerId: session.user.id },
     include: { stats: true, equipment: true },
   });
 
@@ -53,7 +53,7 @@ export default async function EditCharacterPage({
 
   return (
     <div className="min-h-screen bg-gray-950">
-      <CharacterWizard initialData={initialData} characterId={id} />
+      <CharacterWizard initialData={initialData} characterId={characterId} />
     </div>
   );
 }

@@ -48,7 +48,7 @@ export function StepBasics({ data, onChange }: Props) {
 
       <div className="flex gap-8 items-start">
         {/* Avatar upload */}
-        <div className="flex flex-col items-center gap-3 flex-shrink-0">
+        <div className="flex flex-col items-center gap-3 shrink-0">
           <div
             onClick={() => fileRef.current?.click()}
             className="w-28 h-36 bg-gray-800 border-2 border-dashed border-gray-700 hover:border-amber-600 rounded-2xl flex flex-col items-center justify-center gap-2 cursor-pointer transition-colors overflow-hidden relative group"

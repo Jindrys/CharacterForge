@@ -11,7 +11,7 @@ type Props = {
 
 export function CharacterCard({ character }: Props) {
   return (
-    <Link href={`/characters/${character.slug}`}>
+    <Link href={`/hero/${character.slug}`}>
       <motion.div
         whileHover={{ scale: 1.08 }}
         transition={{ duration: 0.2 }}
