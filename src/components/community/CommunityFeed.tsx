@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import { useSearchParams } from "next/navigation";
 import { Filters } from "./Filters";
 import { CharacterGrid } from "./CharacterGrid";
 import type { CharacterWithRelations } from "@/types";
@@ -26,7 +27,11 @@ const defaultFilters: FilterState = {
 };
 
 export function CommunityFeed() {
-  const [filters, setFilters] = useState<FilterState>(defaultFilters);
+  const searchParams = useSearchParams();
+  const [filters, setFilters] = useState<FilterState>({
+    ...defaultFilters,
+    search: searchParams.get("search") || "",
+  });
   const [characters, setCharacters] = useState<CharacterWithRelations[]>([]);
   const [total, setTotal] = useState(0);
   const [pages, setPages] = useState(1);

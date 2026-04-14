@@ -1,8 +1,10 @@
 "use client";
 
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import { motion } from "framer-motion";
-import { PlusCircle, Pencil, Eye, Lock, Globe } from "lucide-react";
+import { PlusCircle, Pencil, Eye, Lock, Globe, Trash2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import type { CharacterWithRelations } from "@/types";
 
 type Props = {
@@ -11,6 +13,22 @@ type Props = {
 
 export function CharacterGrid({ characters }: Props) {
   const showAddCard = characters.length < 4;
+  const router = useRouter();
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [confirmId, setConfirmId] = useState<string | null>(null);
+
+  async function handleDelete(id: string) {
+    setDeletingId(id);
+    try {
+      await fetch(`/api/characters/${id}`, { method: "DELETE" });
+      router.refresh();
+    } catch (error) {
+      console.error("Delete error:", error);
+    } finally {
+      setDeletingId(null);
+      setConfirmId(null);
+    }
+  }
 
   return (
     <div className="bg-gray-900 border border-gray-800 rounded-2xl p-6">
@@ -120,7 +138,44 @@ export function CharacterGrid({ characters }: Props) {
                     <Eye className="w-3 h-3" />
                     Zobrazit
                   </Link>
+                  <button
+                    onClick={() => setConfirmId(character.id)}
+                    className="flex items-center justify-center text-xs bg-gray-700 hover:bg-red-950 text-gray-400 hover:text-red-400 py-2 px-2.5 rounded-lg transition-colors"
+                  >
+                    <Trash2 className="w-3 h-3" />
+                  </button>
                 </div>
+
+                {/* Potvrzovací dialog */}
+                <AnimatePresence>
+                  {confirmId === character.id && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      className="mt-3 bg-red-950 border border-red-800 rounded-xl p-3 space-y-2"
+                    >
+                      <div className="text-red-400 text-xs font-medium">
+                        Opravdu smazat postavu?
+                      </div>
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => handleDelete(character.id)}
+                          disabled={deletingId === character.id}
+                          className="flex-1 text-xs bg-red-800 hover:bg-red-700 text-white py-1.5 rounded-lg transition-colors disabled:opacity-50"
+                        >
+                          {deletingId === character.id ? "Mažu..." : "Smazat"}
+                        </button>
+                        <button
+                          onClick={() => setConfirmId(null)}
+                          className="flex-1 text-xs bg-gray-700 hover:bg-gray-600 text-gray-300 py-1.5 rounded-lg transition-colors"
+                        >
+                          Zrušit
+                        </button>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             </motion.div>
           ))}
