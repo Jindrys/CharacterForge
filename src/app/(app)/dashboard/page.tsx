@@ -7,6 +7,12 @@ import { StatCard } from "@/components/dashboard/StatCard";
 import { TopCharacter } from "@/components/dashboard/TopCharacter";
 import { PlusCircle, Sword, Users, Calendar, UserCog } from "lucide-react";
 import Link from "next/link";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Dashboard",
+  description: "Přehled tvých postav a aktivit.",
+};
 
 async function getDashboardData(userId: string) {
   const [characters, user] = await Promise.all([

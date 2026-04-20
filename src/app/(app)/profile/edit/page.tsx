@@ -6,12 +6,16 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { ArrowLeft, Upload, X, Check } from "lucide-react";
 import { motion } from "framer-motion";
+import { toast } from "sonner";
 
 type ProfileData = {
   username: string;
   bio: string;
   avatarUrl: string;
   email: string;
+  instagram: string;
+  twitter: string;
+  discord: string;
 };
 
 export default function EditProfilePage() {
@@ -24,6 +28,9 @@ export default function EditProfilePage() {
     bio: "",
     avatarUrl: "",
     email: "",
+    instagram: "",
+    twitter: "",
+    discord: "",
   });
   const [preview, setPreview] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
@@ -49,6 +56,9 @@ export default function EditProfilePage() {
         bio: profile.bio || "",
         avatarUrl: profile.avatarUrl || "",
         email: profile.email || "",
+        instagram: profile.instagram || "",
+        twitter: profile.twitter || "",
+        discord: profile.discord || "",
       });
       if (profile.avatarUrl) setPreview(profile.avatarUrl);
     }
@@ -95,6 +105,9 @@ export default function EditProfilePage() {
           username: data.username,
           bio: data.bio,
           avatarUrl: data.avatarUrl,
+          instagram: data.instagram,
+          twitter: data.twitter,
+          discord: data.discord,
         }),
       });
 
@@ -106,6 +119,7 @@ export default function EditProfilePage() {
       }
 
       await update({ username: result.username, avatarUrl: result.avatarUrl });
+      toast.success("Profil byl uložen!");
       setSuccess(true);
 
       setTimeout(() => {
@@ -147,6 +161,7 @@ export default function EditProfilePage() {
         return;
       }
 
+      toast.success("Heslo bylo změněno!");
       setPasswordSuccess(true);
       setPasswordData({
         currentPassword: "",
@@ -296,6 +311,82 @@ export default function EditProfilePage() {
               <p className="text-gray-500 text-xs text-right">
                 {data.bio.length}/300
               </p>
+            </div>
+            {/* Sociální sítě */}
+            <div className="border-t border-gray-800 pt-6">
+              <div className="text-amber-500 text-xs font-medium uppercase tracking-widest mb-5">
+                Sociální sítě
+              </div>
+              <div className="space-y-4">
+                <div className="flex flex-col gap-2">
+                  <label className="text-sm font-medium text-gray-300 flex items-center gap-2">
+                    <span>Instagram</span>
+                  </label>
+                  <div className="flex items-center bg-gray-800 border border-gray-700 rounded-xl overflow-hidden focus-within:border-amber-500 transition-colors">
+                    <span className="px-4 text-gray-500 text-sm border-r border-gray-700 py-3">
+                      @
+                    </span>
+                    <input
+                      type="text"
+                      value={data.instagram}
+                      onChange={(e) =>
+                        setData((prev) => ({
+                          ...prev,
+                          instagram: e.target.value,
+                        }))
+                      }
+                      className="flex-1 bg-transparent px-4 py-3 text-white placeholder-gray-500 focus:outline-none text-sm"
+                      placeholder="tvuj_profil"
+                    />
+                  </div>
+                </div>
+
+                <div className="flex flex-col gap-2">
+                  <label className="text-sm font-medium text-gray-300">
+                    <span>Twitter / X</span>
+                  </label>
+                  <div className="flex items-center bg-gray-800 border border-gray-700 rounded-xl overflow-hidden focus-within:border-amber-500 transition-colors">
+                    <span className="px-4 text-gray-500 text-sm border-r border-gray-700 py-3">
+                      @
+                    </span>
+                    <input
+                      type="text"
+                      value={data.twitter}
+                      onChange={(e) =>
+                        setData((prev) => ({
+                          ...prev,
+                          twitter: e.target.value,
+                        }))
+                      }
+                      className="flex-1 bg-transparent px-4 py-3 text-white placeholder-gray-500 focus:outline-none text-sm"
+                      placeholder="tvuj_profil"
+                    />
+                  </div>
+                </div>
+
+                <div className="flex flex-col gap-2">
+                  <label className="text-sm font-medium text-gray-300">
+                    <span>Discord</span>
+                  </label>
+                  <div className="flex items-center bg-gray-800 border border-gray-700 rounded-xl overflow-hidden focus-within:border-amber-500 transition-colors">
+                    <span className="px-4 text-gray-500 text-sm border-r border-gray-700 py-3 whitespace-nowrap">
+                      discord.gg/
+                    </span>
+                    <input
+                      type="text"
+                      value={data.discord}
+                      onChange={(e) =>
+                        setData((prev) => ({
+                          ...prev,
+                          discord: e.target.value,
+                        }))
+                      }
+                      className="flex-1 bg-transparent px-4 py-3 text-white placeholder-gray-500 focus:outline-none text-sm"
+                      placeholder="tvuj_server"
+                    />
+                  </div>
+                </div>
+              </div>
             </div>
 
             {error && (

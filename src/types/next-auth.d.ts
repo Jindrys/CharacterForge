@@ -8,6 +8,7 @@ declare module "next-auth" {
       email: string;
       username: string;
       avatarUrl: string | null;
+      role: string;
     };
   }
 }
@@ -17,5 +18,6 @@ declare module "next-auth/jwt" {
     id: string;
     username: string;
     avatarUrl: string | null;
+    role: string;
   }
 }

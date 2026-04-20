@@ -103,6 +103,10 @@ export function CharacterWizard({ initialData, characterId }: Props) {
         return;
       }
 
+      const { toast } = await import("sonner");
+      toast.success(
+        characterId ? "Postava byla upravena!" : "Postava byla vytvořena!"
+      );
       router.push("/dashboard");
       router.refresh();
     } catch {

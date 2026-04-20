@@ -3,6 +3,7 @@ import { Geist } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
 import { Navbar } from "@/components/layout/Navbar";
+import { Toaster } from "sonner";
 
 const geist = Geist({
   subsets: ["latin"],
@@ -10,8 +11,26 @@ const geist = Geist({
 });
 
 export const metadata: Metadata = {
-  title: "CharacterForge",
-  description: "Vytvárej, sdílej a spravuj postavy pro stolní RPG hry",
+  title: {
+    default: "CharacterForge",
+    template: "%s | CharacterForge",
+  },
+  description:
+    "Vytvárej, sdílej a spravuj postavy pro stolní RPG hry jako Dungeons & Dragons. Komunita hráčů a Dungeon Masterů.",
+  keywords: [
+    "RPG",
+    "D&D",
+    "Dungeons and Dragons",
+    "postavy",
+    "character sheet",
+    "fantasy",
+  ],
+  openGraph: {
+    title: "CharacterForge",
+    description: "Vytvárej, sdílej a spravuj postavy pro stolní RPG hry.",
+    type: "website",
+    locale: "cs_CZ",
+  },
 };
 
 export default function RootLayout({
@@ -25,6 +44,16 @@ export default function RootLayout({
         <Providers>
           <Navbar />
           <main>{children}</main>
+          <Toaster
+            position="bottom-right"
+            toastOptions={{
+              style: {
+                background: "#111827",
+                border: "1px solid #1f2937",
+                color: "#f9fafb",
+              },
+            }}
+          />
         </Providers>
       </body>
     </html>

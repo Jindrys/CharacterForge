@@ -1,4 +1,11 @@
 import { CommunityFeed } from "@/components/community/CommunityFeed";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Komunita",
+  description:
+    "Prozkoumej postavy komunity CharacterForge. Najdi inspiraci nebo NPC pro svou kampaň.",
+};
 
 export default function CommunityPage() {
   return (

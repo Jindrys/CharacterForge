@@ -2,10 +2,21 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { Heart, Shield, Zap, Footprints, ArrowLeft, Clock } from "lucide-react";
+import {
+  Heart,
+  Shield,
+  Zap,
+  Footprints,
+  ArrowLeft,
+  Clock,
+  Check,
+  Share2,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
 import { getStatModifier, formatModifier } from "@/lib/utils";
 import type { CharacterWithRelations } from "@/types";
+import { ReportButton } from "./ReportButton";
+import { useState } from "react";
 
 type Props = {
   character: CharacterWithRelations & {
@@ -35,6 +46,14 @@ function timeAgo(date: Date) {
 
 export function CharacterSheet({ character, isOwner }: Props) {
   const router = useRouter();
+  const [copied, setCopied] = useState(false);
+
+  async function handleShare() {
+    const url = window.location.href;
+    await navigator.clipboard.writeText(url);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  }
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-6">
       {/* Zpět */}
@@ -88,8 +107,14 @@ export function CharacterSheet({ character, isOwner }: Props) {
                   </Link>
                 )}
 
-                <span className="text-xs bg-purple-950 text-purple-400 border border-purple-800 px-2.5 py-0.5 rounded-full">
-                  Veřejná
+                <span
+                  className={`text-xs px-2.5 py-0.5 rounded-full border ${
+                    character.isPublic
+                      ? "bg-purple-950 text-purple-400 border-purple-800"
+                      : "bg-gray-800 text-gray-400 border-gray-700"
+                  }`}
+                >
+                  {character.isPublic ? "Veřejná" : "Soukromá"}
                 </span>
                 <Link
                   href={`/profile/${character.owner.username}`}
@@ -97,6 +122,23 @@ export function CharacterSheet({ character, isOwner }: Props) {
                 >
                   od {character.owner.username}
                 </Link>
+                <button
+                  onClick={handleShare}
+                  className="flex items-center gap-1.5 text-xs text-gray-500 hover:text-amber-400 transition-colors"
+                >
+                  {copied ? (
+                    <>
+                      <Check className="w-3.5 h-3.5 text-green-400" />
+                      <span className="text-green-400">Zkopírováno!</span>
+                    </>
+                  ) : (
+                    <>
+                      <Share2 className="w-3.5 h-3.5" />
+                      Sdílet
+                    </>
+                  )}
+                </button>
+                {!isOwner && <ReportButton characterId={character.id} />}
               </div>
             </div>
           </div>

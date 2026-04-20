@@ -6,6 +6,7 @@ import Link from "next/link";
 import { PlusCircle, Pencil, Eye, Lock, Globe, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import type { CharacterWithRelations } from "@/types";
+import { toast } from "sonner";
 
 type Props = {
   characters: CharacterWithRelations[];
@@ -21,6 +22,7 @@ export function CharacterGrid({ characters }: Props) {
     setDeletingId(id);
     try {
       await fetch(`/api/characters/${id}`, { method: "DELETE" });
+      toast.success("Postava byla smazána!");
       router.refresh();
     } catch (error) {
       console.error("Delete error:", error);

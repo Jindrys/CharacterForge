@@ -12,6 +12,9 @@ const profileSchema = z.object({
     .regex(/^[a-zA-Z0-9_]+$/, "Pouze písmena, čísla a podtržítko"),
   bio: z.string().max(300, "Bio může mít maximálně 300 znaků").optional(),
   avatarUrl: z.string().optional(),
+  instagram: z.string().max(30).optional(),
+  twitter: z.string().max(30).optional(),
+  discord: z.string().max(50).optional(),
 });
 
 export async function PATCH(request: Request) {
@@ -31,8 +34,8 @@ export async function PATCH(request: Request) {
       );
     }
 
-    const { username, bio, avatarUrl } = parsed.data;
-
+    const { username, bio, avatarUrl, instagram, twitter, discord } =
+      parsed.data;
     // Zkontroluj jestli username není zabrané jiným uživatelem
     if (username !== session.user.username) {
       const existing = await prisma.user.findUnique({ where: { username } });
@@ -46,8 +49,16 @@ export async function PATCH(request: Request) {
 
     const user = await prisma.user.update({
       where: { id: session.user.id },
-      data: { username, bio, avatarUrl },
-      select: { id: true, username: true, bio: true, avatarUrl: true },
+      data: { username, bio, avatarUrl, instagram, twitter, discord },
+      select: {
+        id: true,
+        username: true,
+        bio: true,
+        avatarUrl: true,
+        instagram: true,
+        twitter: true,
+        discord: true,
+      },
     });
 
     return NextResponse.json(user);
@@ -76,6 +87,9 @@ export async function GET() {
         avatarUrl: true,
         email: true,
         createdAt: true,
+        instagram: true,
+        twitter: true,
+        discord: true,
       },
     });
 

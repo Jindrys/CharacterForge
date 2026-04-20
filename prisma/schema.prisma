@@ -46,6 +46,11 @@ model VerificationToken {
 
 // ─── Aplikační modely ─────────────────────────────────────────────────────────
 
+enum Role {
+  USER
+  ADMIN
+}
+
 model User {
   id           String      @id @default(cuid())
   email        String      @unique
@@ -53,12 +58,30 @@ model User {
   passwordHash String?
   avatarUrl    String?
   bio          String?
+  role         Role        @default(USER)
+  instagram    String?
+  twitter      String?
+  discord      String?
   createdAt    DateTime    @default(now())
   updatedAt    DateTime    @updatedAt
 
   accounts     Account[]
   sessions     Session[]
   characters   Character[]
+  reports      Report[]
+}
+
+model Report {
+  id          String   @id @default(cuid())
+  reason      String
+  createdAt   DateTime @default(now())
+  resolved    Boolean  @default(false)
+
+  reporter    User      @relation(fields: [reporterId], references: [id], onDelete: Cascade)
+  reporterId  String
+
+  character   Character @relation(fields: [characterId], references: [id], onDelete: Cascade)
+  characterId String
 }
 
 model Character {
@@ -79,7 +102,8 @@ model Character {
 
   stats     CharacterStats?
   equipment Equipment[]
-  history   CharacterHistory[]
+  history     CharacterHistory[]
+  reports     Report[]
 }
 
 model CharacterStats {

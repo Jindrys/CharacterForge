@@ -10,6 +10,7 @@ import {
   PlusCircle,
   LayoutDashboard,
   X,
+  Shield,
 } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
@@ -212,6 +213,13 @@ export function Navbar() {
                   icon={<LayoutDashboard className="w-5 h-5" />}
                   label="Dashboard"
                 />
+                {session.user.role === "ADMIN" && (
+                  <NavIcon
+                    href="/admin"
+                    icon={<Shield className="w-5 h-5" />}
+                    label="Admin"
+                  />
+                )}
                 <button
                   onClick={() => signOut({ callbackUrl: "/" })}
                   className="relative group flex flex-col items-center p-2 text-gray-400 hover:text-white transition-colors rounded-lg hover:bg-gray-800"
