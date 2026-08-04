@@ -1,36 +1,75 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CharacterForge
 
-## Getting Started
+Webová aplikace pro sdílení a správu postav stolních RPG her.
+Bakalářská práce — Jindřich Kopejtko, Univerzita Pardubice 2026.
 
-First, run the development server:
+## Požadavky
 
-```bash
+- Node.js v22+
+- npm v10+
+- PostgreSQL 16+
+
+## Instalace
+
+1. Nainstaluj závislosti
+
+npm install
+
+2. Nastav proměnné prostředí — vytvoř soubor .env v kořenovém adresáři
+
+Pro lokální PostgreSQL:
+DATABASE_URL="postgresql://postgres:heslo@localhost:5432/characterforge"
+
+Pro Supabase:
+1. Vytvoř účet na https://supabase.com a založ nový projekt
+2. V projektu přejdi na Settings → Database → Connection string → URI
+3. Zkopíruj connection string a vlož ho do .env
+
+DATABASE_URL="postgresql://postgres:[HESLO]@db.xxxxxxxxxxxx.supabase.co:5432/postgres"
+NEXTAUTH_SECRET="zvol-nahodny-retezec"
+NEXTAUTH_URL="http://localhost:3000"
+
+3. Synchronizuj databázové schéma
+
+npx prisma db push
+
+4. Volitelně — naplň databázi testovacími daty
+
+npm run seed
+
+5. Spusť vývojový server
+
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Aplikace bude dostupná na http://localhost:3000
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Testovací účty po spuštění seedu
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Username | Email | Heslo | Role |
+|----------|-------|-------|------|
+| DungeonMaster | dungeon@master.cz | Heslo123! | USER |
+| ElaraWood | elara@elf.cz | Heslo123! | USER |
+| IronForge | thorin@dwarf.cz | Heslo123! | USER |
+| ShadowStep | shadow@rogue.cz | Heslo123! | USER |
+| Admin | admin@characterforge.cz | Admin123! | ADMIN |
 
-## Learn More
+## Struktura projektu
 
-To learn more about Next.js, take a look at the following resources:
+src/app/ — stránky a API endpointy (Next.js App Router)
+src/components/ — React komponenty
+src/lib/ — pomocné funkce a konfigurace
+src/types/ — TypeScript typy
+prisma/ — databázové schéma a seed data
+public/ — statické soubory
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Použité technologie
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Next.js 16
+- React 18
+- TypeScript
+- Tailwind CSS
+- PostgreSQL
+- Prisma ORM
+- NextAuth.js
+- Zod
+- Framer Motion
